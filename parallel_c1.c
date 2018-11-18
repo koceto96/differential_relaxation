@@ -259,9 +259,9 @@ neighbor_average(void *t_data);
 
 int
 main(int argc, char *argv[]) {
-    char *num_threads_arg;	                    /* num_threads as a string */
-    char *precision_arg;	                    /* precision as a string */
-    int c;		                                /* option */
+    char *num_threads_arg;                      /* num_threads as a string */
+    char *precision_arg;                        /* precision as a string */
+    int c;                                      /* option */
     uint8_t num_threads = DEFAULT_THREAD_COUNT; /* number of pthreads to run on */
     _Bool defaul = FALSE;                       /* bit stating run with the default data */
     char* test_val_file_name;                   /* path to the file containing the test array*/
