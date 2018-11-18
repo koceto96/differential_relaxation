@@ -1,3 +1,63 @@
+/**
+ * parallel_c1 - parallel and sequential comparative implementation of the
+ * relaxation technique for solving partial differential equations.
+ *
+ *
+ * The program parallel_c1.c contains the parallel implementation
+ * of the above algorithm.
+ * It also contains an identical sequential version of the
+ * algorithm for correctness testing and scalability reference.
+ *
+ * For the parallel part parallel_c1.c implements the above algorithm using a
+ * SIMD model with a superstep.
+ * For each iteration kk all threads compute the avearages of their elements
+ * without the need of communication giving good parallisation. This is achieved by
+ * using two separe double arrays - one for reading (iteration k-1) and one
+ * for writing (result of iteration kk). At the end of each iteration a barrier
+ * is used to synchronise the threads before the following iteration.
+ * This introduces an element of sequentiality to the program, but the nature
+ * of the algorithm requires it.
+ *
+ * For O(1)O(1) complexity, just a simple pointer swap is used to transfer the
+ * elements of the write array to the read array at the end of each iteration.
+ * If there was at least one element that is unsettled in iteration k, all of
+ * the elements are recomputed in the next iteration, otherwise the algorithm
+ * is considered to be finished.
+ *
+ * The barrier at the end of each iteration is customly implemented using
+ * POSIX semaphores for maximal portability and good speed.
+ *
+ * At the end of the program the result of the parallel algorithm is compared with
+ * the result of the sequential and if there is an different element an
+ * error is returned and both values and their positions in the array
+ * are printed to stderr.
+ *
+ *
+ * @(#) $Revision$
+ * @(#) $Id$
+ * @(#) $Source$
+ *
+ * Copyright (c) 2018 by Konstantin Simeonov.  All Rights Reserved.
+ *
+ * Permission to use, copy, modify, and distribute this software and
+ * its documentation for any purpose and without fee is hereby granted,
+ * provided that the above copyright, this permission notice and text
+ * this comment, and the disclaimer below appear in all of the following:
+ *
+ *       supporting documentation
+ *       source copies
+ *       source works derived from this source
+ *       binaries derived from this source or from derived source
+ *
+ * KONSTANTIN SIMEONOV DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+ * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO
+ * EVENT SHALL KONSTANTIN SIMEONOV BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+ * USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+ * OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ * PERFORMANCE OF THIS SOFTWARE.
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
