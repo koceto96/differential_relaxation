@@ -12,13 +12,13 @@
  * SIMD model with a superstep.
  * For each iteration kk all threads compute the avearages of their elements
  * without the need of communication giving good parallisation. This is achieved by
- * using two separe double arrays - one for reading (iteration k-1) and one
+ * using two separate double arrays - one for reading (iteration k-1) and one
  * for writing (result of iteration kk). At the end of each iteration a barrier
  * is used to synchronise the threads before the following iteration.
  * This introduces an element of sequentiality to the program, but the nature
  * of the algorithm requires it.
  *
- * For O(1)O(1) complexity, just a simple pointer swap is used to transfer the
+ * For O(1) complexity, just a simple pointer swap is used to transfer the
  * elements of the write array to the read array at the end of each iteration.
  * If there was at least one element that is unsettled in iteration k, all of
  * the elements are recomputed in the next iteration, otherwise the algorithm
